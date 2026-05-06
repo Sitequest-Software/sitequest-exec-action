@@ -1,0 +1,50 @@
+name: "Sitequest Exec"
+description: "Run a shell command on a Sitequest VPS or webspace via the REST API."
+author: "Sitequest"
+branding:
+  icon: "terminal"
+  color: "black"
+
+inputs:
+  api-key:
+    description: "Sitequest API key with the `vps:manage` and/or `webspace:manage` scope."
+    required: true
+  resource:
+    description: "Target resource type — `vps` or `webspace`."
+    required: true
+  id:
+    description: "Resource ID (VPS or webspace)."
+    required: true
+  command:
+    description: "Shell command to run. Multi-line strings are passed verbatim."
+    required: true
+  cwd:
+    description: "Working directory to execute the command in (optional)."
+    required: false
+    default: ""
+  timeout:
+    description: "Execution timeout in seconds (default 300, max 1800)."
+    required: false
+    default: "300"
+  fail-on-non-zero:
+    description: "If `true` (default), fail the step when the remote exit code is non-zero."
+    required: false
+    default: "true"
+  api-base:
+    description: "Override the API base URL (for staging or self-hosted)."
+    required: false
+    default: "https://hosting.site.quest"
+
+outputs:
+  exit-code:
+    description: "Remote exit code (-1 if the request itself failed)."
+  stdout:
+    description: "Captured stdout from the remote command."
+  stderr:
+    description: "Captured stderr from the remote command."
+  duration-ms:
+    description: "End-to-end duration in milliseconds."
+
+runs:
+  using: "node24"
+  main: "dist/index.js"
